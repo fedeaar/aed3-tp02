@@ -23,8 +23,6 @@ vector<int> R, S; int t = 0; // recorridos y start
 vector<int> C, C_sum; int c = 0; int k = 0; // componentes y tamaño de cada una
 
 
-
-
 //
 // AUX
 //
@@ -36,8 +34,6 @@ ll choose(int n, int k) {
     for (int i = n; i > n-k; --i) n_f *= i;
     return n_f / k_f;
 }
-
-
 
 
 //
@@ -75,7 +71,6 @@ void rm_puentes() {
     }   
 }
 
-
 void componente_aux(int v) {
     R[v] = 1; C[v] = c; k += 1;
     for (auto w : G[v]) {
@@ -94,7 +89,6 @@ void componentes() {
     }   
 }
 
-
 double solve() {
     rm_puentes();
     componentes();
@@ -102,8 +96,6 @@ double solve() {
     for (auto c: C_sum) ganar += choose(c, 2);
     return 1 - (double) ganar / total;
 }
-
-
 
 
 //
