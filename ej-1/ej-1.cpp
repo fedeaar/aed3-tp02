@@ -4,7 +4,12 @@
 #include <limits>
 
 using namespace std;
+
 typedef long long ll;
+struct node {
+    int ref;
+    int v_ref; 
+};
 
 
 //
@@ -13,11 +18,11 @@ typedef long long ll;
 
 int INF = numeric_limits<int>::max();
 int n, m;
-struct node {
-    int ref;
-    int v_ref; 
-};
-vector<vector<node>> G;
+vector<vector<node>> G; // grafo
+vector<int> R, S; int t = 0; // recorridos y start
+vector<int> C, C_sum; int c = 0; int k = 0; // componentes y tamaño de cada una
+
+
 
 
 //
@@ -33,28 +38,30 @@ ll choose(int n, int k) {
 }
 
 
+
+
 //
 // SOLUCION
 //
 
-vector<int> R, S; int t = 0;
 int puentes_aux(int v, int p) {
     R[v] = 1; t += 1; S[v] = t;
     int w, x, min = INF;
     for (int i = 0; i < G[v].size(); ++i) {
         w = G[v][i].ref;
-        if (w == p || w == -1) continue;
+        if (w == p || w == -1) continue; // es padre o la removimos
         if (R[w] == 1) {
-            if (S[w] < S[v]) {
+            if (S[w] < S[v]) { // es back-edge
                 x = S[w];
-            } else {
+            } else { // es forward-edge
                 continue;
             }
         } else {
             x = puentes_aux(w, v);
         }
-        if (S[v] < x) {
-            G[v][i].ref = -1;
+        if (S[v] < x) { // en este caso la arista es puente
+            G[v][i].ref = -1; // la 'removemos'
+            G[w][G[v][i].v_ref].ref = -1;
         }
         if (x < min) {
             min = x;
@@ -68,7 +75,7 @@ void rm_puentes() {
     }   
 }
 
-vector<int> C, C_sum; int c = 0; int k = 0;
+
 void componente_aux(int v) {
     R[v] = 1; C[v] = c; k += 1;
     for (auto w : G[v]) {
@@ -87,6 +94,7 @@ void componentes() {
     }   
 }
 
+
 double solve() {
     rm_puentes();
     componentes();
@@ -94,6 +102,8 @@ double solve() {
     for (auto c: C_sum) ganar += choose(c, 2);
     return 1 - (double) ganar / total;
 }
+
+
 
 
 //
