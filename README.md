@@ -1,4 +1,4 @@
-## TP1: Técnicas Algoritmicas
+## TP2: Recorridos y AGM
 
 Arienti, Zaid
 
