@@ -1,0 +1,13 @@
+**/build/
+**/cmake-build-debug/
+**/.idea/
+**/.vscode/
+**/informe/*.aux
+**/informe/*.fdb_latexmk
+**/informe/*.fls
+**/informe/*.log
+**/informe/*.out
+**/informe/*.gz
+**/informe/*.toc
+**/informe/*.bbl
+**/informe/*.blg
