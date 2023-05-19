@@ -94,7 +94,8 @@ void encontrar_indices() {
         indices_d_in[i].first = i;
         for (int w : F[i].second) indices_d_in[w].second++;
     }
-    bucket_sort(indices_d_in);
+    sort(indices_d_in.begin(), indices_d_in.end());
+    //bucket_sort(indices_d_in);
     vector<bool> marcados_limpio(F.size(), false);
     marcados = marcados_limpio;
     // Recorre los nodos de F en orden de d_in
@@ -124,9 +125,10 @@ int main(int argc, char** argv) {
     kosaraju();
     encontrar_indices();
 
-    cout << solucion.size() << "\n";
+    cout << solucion.size() << endl;
     for (int s : solucion) {
-        cout << s + 1 << " "; // Volvemos a sumar lo restado
+        cout << s+1 << " "; // Volvemos a sumar lo restado
     }
+    cout << endl;
     return 0;
 }
