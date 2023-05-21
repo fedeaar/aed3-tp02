@@ -6,7 +6,7 @@ using namespace std;
 
 typedef pair<int,int> pos;
 vector<tuple<double, bool, int, int>>E;
-int n, r, w, u, v;
+int N, R, W, U, V;
 double s_utp = 0;
 double s_fo = 0;
 
@@ -18,17 +18,17 @@ double distancia(pos z, pos w) {
 }
 
 void crear_E(vector<pos>& G) {
-    for (int i = 0; i < n; i++) {
-        for (int j = i + 1; j < n; j++) {
+    for (int i = 0; i < N; i++) {
+        for (int j = i + 1; j < N; j++) {
             double dist = distancia(G[i], G[j]);
             double costo;
             bool esFO;
-            if (dist <= r) {
-                costo = dist * u;
+            if (dist <= R) {
+                costo = dist * U;
                 esFO = false;
             }
             else {
-                costo = dist * v;
+                costo = dist * V;
                 esFO = true;
             }
             E.push_back(make_tuple(costo, esFO, i, j));
@@ -63,11 +63,11 @@ struct DSU{
 void kruskal() {
     sort(E.begin(), E.end());
     int aristas = 0;
-    DSU dsu(n);
+    DSU dsu(N);
     for (auto tup: E) {
         // La cantidad de modems equivale a la cantidad de componentes conexas de nuestro arbol.
         // Al ser bosque generador, si tiene w c.c, tiene n - w aristas
-        if (aristas >= n - w) break;
+        if (aristas >= N - W) break;
 
         double c = get<0>(tup);
         bool fo = get<1>(tup);
@@ -88,19 +88,19 @@ int main(int argc, char** argv) {
     int c;
     cin >> c;
     for (int k = 0; k < c; k ++) {
-        cin >> n >> r >> w >> u >> v;
+        s_utp = 0;
+        s_fo = 0;
+        E = {}; //Reiniciamos las variables globales para los siguientes casos
         vector<pos> G;
+        cin >> N >> R >> W >> U >> V;
         int x, y;
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < N; i++) {
             cin >> x >> y;
             G.push_back(make_pair(x,y));
         }
         crear_E(G);
         kruskal();
         cout << "Caso #" << k+1 << ": ";
-        cout <<  setprecision(3) << s_utp << " " << s_fo << endl;
-        E = {}; //Reiniciamos las variables globales para los siguientes casos
-        s_fo = 0;
-        s_utp = 0;
+        cout <<  setprecision(3) << fixed << s_utp << " " << s_fo << endl;
     }
 }
