@@ -1,0 +1,45 @@
+% !TeX root = main.tex
+\documentclass{./packages/informe}
+\usepackage{./packages/caratula}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\graphicspath{./files/src/.media/}
+
+\begin{document} 
+
+% caratula 
+\input{files/src/caratula.tex}
+
+% palabras clave y resumen
+\addtocontents{toc}{\protect\setcounter{tocdepth}{0}}
+\section*{resumen}
+\addtocontents{toc}{\protect\setcounter{tocdepth}{3}}
+\input{files/src/resumen.tex}
+% \newpage
+
+% contenido
+\tableofcontents
+\newpage
+
+% introduccion
+\section{El problema de los módems}\label{modems}
+\input{files/src/modems.tex}
+%\newpage
+
+% resultados
+\vspace{2em}
+\section{Evaluación empírica}
+\input{files/src/experimentacion.tex}
+\newpage
+
+% apendice
+% \section{Apéndice}
+% \input{files/src/apendice.tex}
+% \newpage
+
+%bibliografia - requiere que haya citas
+% \bibliographystyle{plain}
+% \bibliography{./files/citations.bib}
+% \newpage
+
+\end{document}
