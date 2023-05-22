@@ -3,60 +3,68 @@ El problema de los \textit{módems} que consideraremos tiene la siguiente premis
 \begin{equation*}
     O := \{o_1\ ...\ o_N\}    
 \end{equation*}
-donde, para cada $1 \leq i \leq N$, la oficina $o_i$ se representa por su posición $(x_i,\ y_i)$ en el plano cartesiano, queremos encontrar el costo mínimo que deberemos pagar en cables para conectar todas las oficinas a internet\footnote{Notar que una oficina tendrá acceso a internet si y sólo si tiene un módem o está conectada a una oficina con acceso a internet.}.
+donde, para cada $1 \leq i \leq N$, la oficina $o_i$ se representa por su posición $(x_i,\ y_i)$ en el plano cartesiano, queremos encontrar el costo mínimo que deberemos pagar en cables UTP y de fibra óptica para conectar todas las oficinas a internet\footnote{Notar que una oficina tendrá acceso a internet si y sólo si tiene un módem o está conectada a una oficina con acceso a internet.}.
 
-Para ello, vamos a contar con $W < N$ módems a distribuir entre las oficinas e incurriremos en un costo de $U$ o $V$ pesos, $U \leq V$, respectivamente, por cada centímetro de cable UTP o de fibra óptica utilizado. Dado que los cables UTP tienen ciertas restricciones, estos se podrán utilizar si y sólo si la distancia entre dos oficinas es menor o igual a $R$ centímetros. 
+Para ello, vamos a contar con $W < N$ módems a distribuir entre las oficinas e incurriremos en un costo de $U$ o $V$ pesos, $0 \leq U \leq V$, respectivamente, por cada centímetro de cable UTP o de fibra óptica utilizado. Dado que los cables UTP tienen ciertas restricciones, estos se podrán utilizar si y sólo si la distancia entre dos oficinas es menor o igual a $R$ centímetros. 
 
-Por ejemplo, si
-\begin{equation*}
-    O = \{(0,\ 0),\ (0,\ 1),\ (1,\ 0)\},\ R = 2,\ W = 1,\ U = 1\ \: \text{y}\ \: V = 1  
-\end{equation*} 
-luego una solución puede situar un módem en la oficina $(0,\ 0)$ y conectarla a cada una de las restantes con un centímetro de cable UTP, por un costo total de dos pesos.
+% Por ejemplo, si
+% \begin{equation*}
+%     O = \{(0,\ 0),\ (0,\ 1),\ (1,\ 0)\},\ R = 2,\ W = 1,\ U = 1\ \: \text{y}\ \: V = 1  
+% \end{equation*} 
+% luego una solución puede situar un módem en la oficina $(0,\ 0)$ y conectarla a cada una de las restantes con un centímetro de cable UTP, por un costo total de dos pesos.
 
 % modelado
-\subsection{Modelado como un problema de árbol generador mínimo}
+\subsection{Modelado como un problema de árbol generador mínimo}\label{modelo}
 
 Dada la descripción anterior, vamos a mostrar que el problema se puede modelar como una variante del problema del árbol generador mínimo. Lo detallamos a continuación.
 
-Sea $G$ un grafo pesado completo cuyos vértices son el conjunto de oficinas $O$. Por cada par de vértices $o_i,\ o_j \in O$, definimos el costo de la arista $(o_i,\ o_j)$ como
+Sea $G_{\text{M}}$ un grafo pesado completo cuyos vértices son el conjunto de oficinas $O$. Por cada par de vértices $o_i,\ o_j \in O$, definimos el costo de la arista $(o_i,\ o_j)$ como
 \begin{equation*}
     w(o_i,\ o_j) = \begin{cases}
         d_{ij} \cdot U &\text{si}\ d_{ij} \leq R \\
         d_{ij} \cdot V & \text{si no}
     \end{cases}
 \end{equation*}
+%= \sqrt{(x_i - x_j)^2 + (y_i - y_j)^2}
 donde $d_{ij}$ es la distancia euclideana entre ambas oficinas. 
 
-Luego, de haber, al menos, una oficina con un módem, $G$ modela una solución no mínima al problema de los módems en la que todas las oficinas están conectadas entre si con la opción más barata disponible entre un cable UTP y uno de fibra óptica. 
+Luego, de haber al menos una oficina con un módem, $G_{\text{M}}$  modela una solución no mínima en la que todas las oficinas están conectadas entre si con la opción más barata disponible entre un cable UTP y uno de fibra óptica. 
 
-Si $W = 1$, sigue que, para mantener a todas las oficinas conectadas y minimizar el costo empleado en los cables, basta encontrar un árbol generador mínimo de $G$. 
+Si $W = 1$, sigue que, para mantener a todas las oficinas conectadas y minimizar el costo empleado en los cables, basta encontrar un árbol generador mínimo de $G_{\text{M}}$. 
 
-Sin embargo, si $W > 1$, podemos reducir aún más el costo si, en vez de encontrar un árbol generador mínimo, encontramos un bosque generador mínimo de $W$ componentes. Es decir, que incluya todos los vértices de $G$ y cuyo peso sea mínimo.
+Sin embargo, si $W > 1$, podemos reducir aún más el costo si, en vez de encontrar un árbol generador mínimo, encontramos un bosque generador mínimo de $W$ componentes de $G_{\text{M}}$. Es decir, un bosque de $W$ árboles que incluya todos los vértices de $G_{\text{M}}$ y tenga peso mínimo.
 
 Vamos a demostrar que este bosque es óptimo y que basta modificar el algoritmo de \textit{Kruskal} para que termine en la iteración $N-W$ para encontrarlo.
 
 % optimalidad
 \subsection{Demostración de optimalidad}
 
-Supongamos, por absurdo, que un bosque generador mínimo de $W$ componentes $B$ de $G$ no es una solución óptima al problema de los módems. Luego, debe existir otro subgrafo $B'$ de $G$ que tiene menor peso y que, una vez dispuestos los $W$ módems, provee de internet a todas las oficinas. 
+Supongamos, por absurdo, que un bosque generador mínimo de $W$ componentes de $G_{\text{M}}$ no es una solución óptima al problema de los módems. Luego, debe existir otro subgrafo $B \subseteq G_{\text{M}}$ cuyo peso es el mínimo posible y que, una vez dispuestos los $W$ módems, provee de internet a todas las oficinas. 
 
-Notamos primero que $B'$ también debe ser un bosque generador de $W$ componentes. Esto se debe a que: si no fuera generador, entonces no estaríamos considerando todas las oficinas en nuestro modelo; y, si no fuera bosque de $W$ componentes, entonces podríamos reducir su peso si eliminamos suficientes aristas hasta formar uno. Notar, a su vez, que no puede tener más componentes. Si no, no habría suficientes módems para conectar todas las oficinas.
+Sin embargo, $B$ también debe ser un bosque generador de $W$ componentes. Esto se debe a que: si no fuera generador, entonces no estaríamos considerando todas las oficinas en nuestro modelo; y, si no fuera un bosque de $W$ componentes, entonces podríamos reducir su peso si eliminamos suficientes aristas ---el peso de toda arista es positivo en $G_{\text{M}}$--- hasta formar uno. Notar que tampoco puede tener más componentes, ya que no habría suficientes módems para proveer de internet a cada grupo de oficinas. 
 
-Sigue que $B'$ es un bosque generador de $W$ componentes conexas de $G$ que tiene un peso menor que un bosque generador mínimo de $W$ componentes  de $G$. $\rightarrow\leftarrow$
+En consecuencia, $B$ es un bosque generador de $W$ componentes conexas de $G_{\text{M}}$ que tiene un peso menor que un bosque generador mínimo de $W$ componentes  de $G_{\text{M}}$. $\rightarrow\leftarrow$ $\hfill \square$
 
 % correctitud
-\subsection{Demostración de correctitud} Dicho esto, vamos a demostrar primero la siguiente proposición. Dado un grafo conexo $G$, un subgrafo $B$ de un árbol generador mínimo $T$ de $G$ es un bosque generador mínimo de $k$ componentes de $G$ si se compone de las $n - k$ aristas de peso mínimo de $T$.
+\subsection{Demostración de correctitud}\label{correctitud} Vamos a demostrar primero la siguiente proposición. Dado un grafo conexo $G$, un subgrafo $B$ de un árbol generador mínimo $T \subseteq G$ es un bosque generador mínimo de $k$ componentes de $G$ si se compone de las $n - k$ aristas de peso mínimo de $T$.
 
+\begin{proof}
 Por propiedad de árboles, está claro que si $B$ tiene $n - k$ aristas, entonces $B$ es un bosque generador de $k$ componentes conexas. Vamos a demostrar entonces, por el absurdo, que es mínimo.
 
-Supongamos que existe un bosque generador $B'$ de $k$ componentes de $G$ que tiene menor peso que $B$. Luego, podemos construir un árbol generador de $G$ tomando un conjunto $E$ de $k-1$ aristas de $T$ que unan a las $k$ componentes conexas diferentes en $B'$. Esto lo podemos hacer ya que, si tal conjunto no existierá, entonces habría, al menos, un par de vértices ubicados en dos componentes conexas diferentes de $B'$, para los cuales no existe un camino que los una en $T$. Lo que es absurdo, dado que $T$ es un árbol generador.
+Supongamos que existe un bosque generador $B'$ de $k$ componentes de $G$ que pesa menos que $B$. Luego, podemos construir un árbol generador de $G$ tomando un conjunto $E$ de $k-1$ aristas de $T$ que unan a las $k$ componentes conexas diferentes en $B'$. Esto lo podemos hacer ya que, si tal conjunto no existierá, entonces habría, al menos, un par de vértices, ubicados en dos componentes conexas diferentes de $B'$, para los cuales no existe un camino que los una en $T$. Lo que es absurdo, dado que $T$ es un árbol generador.
 
 Dicho esto, como estas aristas tienen, a lo sumo, el peso de las $k-1$ aristas máximas en $T$, sigue que $B' + E$ es un árbol generador de $G$ con peso menor que el árbol generador mínimo $T$. $\rightarrow\leftarrow$  
-
-En consecuencia, dado que el invariante del algoritmo de \textit{Kruskal} afirma que, para la $k$-ésima iteración, el grafo $T_k$ construido por el algoritmo es un subgrafo de un árbol generador mínimo de $G$ y, en cada iteración, el algoritmo agrega una arista segura de peso mínimo a $T_k$, para todo $1 \leq k \leq n-1$, entonces $T_{n-k}$ es un subgrafo de un árbol generador mínimo de $T$ compuesto por las $n-k$ aristas de peso mínimo de $T$. Sigue que $T_{n-k}$ es un bosque generador mínimo de $k$ componentes.
+\end{proof}
+En consecuencia, dado que el invariante del algoritmo de \textit{Kruskal} afirma que, para la $k$-ésima iteración, el grafo $B_k$ construido por el algoritmo es un subgrafo de un árbol generador mínimo de $G$ y, en cada iteración, el algoritmo agrega una arista segura de peso mínimo a $B_k$, para todo $1 \leq k \leq n-1$, entonces, $B_{n-k}$ es un subgrafo de un árbol generador mínimo de $T$ compuesto por las $n-k$ aristas de peso mínimo de $T$. Luego, por su cantidad de aristas, $B_{n-k}$ es un bosque generador mínimo de $k$ componentes. $\hfill \square$
 
 % algoritmo
-\subsection{El algoritmo} Dicho todo esto, proponemos el siguiente algoritmo como solución al problema de los \textit{módems}.
+\subsection{El algoritmo} Dicho todo esto, el siguiente pseudo-algoritmo presenta una solución al problema de los \textit{módems}. 
+
+\lstinputlisting[mathescape=true, language=pseudo, label=modems, caption={Pseudocódigo para el problema de los \textit{módems}.}]{files/src/.code/modems.pseudo}
+
+El mismo construye el conjunto de aristas pesadas $E$ de $G_{\text{M}}$ a partir del conjunto de entrada $O$ y la función $w$ definida en el apartado (\ref{modelo}). A su vez, emplea una versión modificada del algoritmo de \textit{Kruskal} que, además de terminar antes, acumula el costo incurrido en cada tipo de cable, en las variables $a$ y $b$, a medida que agregamos aristas al bosque $B$. Notar que, para el algoritmo de \textit{Kruskal}, un arista es segura si, además de mantener su invariante, conecta a dos componentes conexas diferentes del subgrafo construido hasta esa iteración.
 
 % complejidad
-\subsection{Complejidad temporal y espacial}
+\subsection{Complejidad temporal y espacial} El algoritmo presentado en la sección anterior tiene un costo fijo asociado a la construcción del conjunto $E$: dado que el grafo $G_\text{M}$ es completo, la complejidad de construir $E$, tanto temporal como espacial, será $O(m) = O(n^2)$, donde $m$ y $n$ refieren a la cantidad de aristas y vértices, respectivamente, del grafo. 
+
+Sin embargo, el costo asociado al algoritmo de  \textit{Kruskal} puede variar acorde a su implementación. En particular, el costo del algoritmo está atado al ordenamiento\footnote{ El mismo está implícito en la línea $6$ de nuestro pseudocódigo.}, por peso, del conjunto $E$. Dado que no tenemos garantías respecto al peso de las aristas, ordenarlas tendrá un costo en $O(m\log m) = O(m \log n)$. Sigue que, si utilizamos una estructura de conjuntos disjuntos con las heurísticas de \textit{union by size} y \textit{path compression}, podemos mantener la complejidad temporal de \textit{Kruskal} en $O(m\log n)$, por un costo espacial en $O(n)$\footnote{Ver nota al pie (\ref{foot_3}) y la sección 23.2 del mismo libro.}. Teóricamente, esta es la mejor implementación de \textit{Kruskal} para este caso de uso. 

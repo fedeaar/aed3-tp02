@@ -11,6 +11,7 @@
 \RequirePackage[caption=false]{subfig}
 \RequirePackage{hyperref}
 \RequirePackage{listings}
+\RequirePackage{xcolor}
 \hypersetup {
   pdfstartview=FitH,
   colorlinks=true,
