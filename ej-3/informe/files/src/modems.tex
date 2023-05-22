@@ -3,9 +3,9 @@ El problema de los \textit{módems} que consideraremos tiene la siguiente premis
 \begin{equation*}
     O := \{o_1\ ...\ o_N\}    
 \end{equation*}
-donde, para cada $1 \leq i \leq N$, la oficina $o_i$ se representa por su posición $(x_i,\ y_i)$ en el plano cartesiano ---con unidad en centímetros---, queremos encontrar el costo mínimo a emplear en cables UTP y en cables de fibra óptica para conectar todas las oficinas a internet\footnote{Notar que una oficina tendrá acceso a internet si y sólo si tiene un módem o si está conectada a una oficina con acceso a internet.}.
+donde, para cada $1 \leq i \leq N$, la oficina $o_i$ se representa por su posición $(x_i,\ y_i)$ en el plano cartesiano, queremos encontrar el costo mínimo que deberemos pagar en cables para conectar todas las oficinas a internet\footnote{Notar que una oficina tendrá acceso a internet si y sólo si tiene un módem o está conectada a una oficina con acceso a internet.}.
 
-Para ello, vamos a contar con $W < N$ módems y vamos a disponer de cables UTP y de fibra óptica, cuyo costo por centímetro será $U$ y $V$ pesos, respectivamente. Dado que los cables UTP tienen ciertas restricciones, estos se podrán utilizar si y sólo si la distancia entre dos oficinas es menor a $R$ centímetros. 
+Para ello, vamos a contar con $W < N$ módems a distribuir entre las oficinas e incurriremos en un costo de $U$ o $V$ pesos, $U \leq V$, respectivamente, por cada centímetro de cable UTP o de fibra óptica utilizado. Dado que los cables UTP tienen ciertas restricciones, estos se podrán utilizar si y sólo si la distancia entre dos oficinas es menor o igual a $R$ centímetros. 
 
 Por ejemplo, si
 \begin{equation*}
@@ -16,34 +16,47 @@ luego una solución puede situar un módem en la oficina $(0,\ 0)$ y conectarla 
 % modelado
 \subsection{Modelado como un problema de árbol generador mínimo}
 
-Dada la descripción anterior, vamos a demostrar que el problema se puede modelar como una variante del problema del árbol generador mínimo. Lo detallamos a continuación.
+Dada la descripción anterior, vamos a mostrar que el problema se puede modelar como una variante del problema del árbol generador mínimo. Lo detallamos a continuación.
 
 Sea $G$ un grafo pesado completo cuyos vértices son el conjunto de oficinas $O$. Por cada par de vértices $o_i,\ o_j \in O$, definimos el costo de la arista $(o_i,\ o_j)$ como
 \begin{equation*}
     w(o_i,\ o_j) = \begin{cases}
-        d_{ij} \cdot U &\text{si}\ U \leq V\ \: \text{y}\ \: d_{ij} < R \\
+        d_{ij} \cdot U &\text{si}\ d_{ij} \leq R \\
         d_{ij} \cdot V & \text{si no}
     \end{cases}
 \end{equation*}
 donde $d_{ij}$ es la distancia euclideana entre ambas oficinas. 
 
-Luego, de haber, al menos, una oficina con un módem, $G$ modela una solución no mínima en la que todas las oficinas están conectadas entre si con la opción más barata disponible entre un cable UTP y uno de fibra óptica. Si $W = 1$, sigue que, para mantener a todas las oficinas conectadas y minimizar el costo empleado en los cables, basta encontrar un árbol generador mínimo de $G$. 
+Luego, de haber, al menos, una oficina con un módem, $G$ modela una solución no mínima al problema de los módems en la que todas las oficinas están conectadas entre si con la opción más barata disponible entre un cable UTP y uno de fibra óptica. 
 
-Sin embargo, si $W > 1$, podemos reducir aún más el costo si, en vez de encontrar un árbol, encontramos un bosque de $W$ componentes conexas cuyo peso sea mínimo.
+Si $W = 1$, sigue que, para mantener a todas las oficinas conectadas y minimizar el costo empleado en los cables, basta encontrar un árbol generador mínimo de $G$. 
 
-Notar que este bosque se puede generar removiendo las $W-1$ aristas de peso máximo de un árbol generador mínimo $T$ de $G$. Esto se debe a que esta operación genera un grafo de $N - W$ aristas, por lo que se compone de $W$ componentes conexas que son árboles y tiene peso mínimo ya que $T$ es mínimo y estamos removiendo sus aristas de peso máximo. 
+Sin embargo, si $W > 1$, podemos reducir aún más el costo si, en vez de encontrar un árbol generador mínimo, encontramos un bosque generador mínimo de $W$ componentes. Es decir, que incluya todos los vértices de $G$ y cuyo peso sea mínimo.
 
-Vamos a demostrar que lo podemos encontrar  modificando el algoritmo de \textit{Kruskal} para que termine en la iteración $N-W$.
+Vamos a demostrar que este bosque es óptimo y que basta modificar el algoritmo de \textit{Kruskal} para que termine en la iteración $N-W$ para encontrarlo.
+
+% optimalidad
+\subsection{Demostración de optimalidad}
+
+Supongamos, por absurdo, que un bosque generador mínimo de $W$ componentes $B$ de $G$ no es una solución óptima al problema de los módems. Luego, debe existir otro subgrafo $B'$ de $G$ que tiene menor peso y que, una vez dispuestos los $W$ módems, provee de internet a todas las oficinas. 
+
+Notamos primero que $B'$ también debe ser un bosque generador de $W$ componentes. Esto se debe a que: si no fuera generador, entonces no estaríamos considerando todas las oficinas en nuestro modelo; y, si no fuera bosque de $W$ componentes, entonces podríamos reducir su peso si eliminamos suficientes aristas hasta formar uno. Notar, a su vez, que no puede tener más componentes. Si no, no habría suficientes módems para conectar todas las oficinas.
+
+Sigue que $B'$ es un bosque generador de $W$ componentes conexas de $G$ que tiene un peso menor que un bosque generador mínimo de $W$ componentes  de $G$. $\rightarrow\leftarrow$
 
 % correctitud
-\subsection{Demostración de correctitud}
+\subsection{Demostración de correctitud} Dicho esto, vamos a demostrar primero la siguiente proposición. Dado un grafo conexo $G$, un subgrafo $B$ de un árbol generador mínimo $T$ de $G$ es un bosque generador mínimo de $k$ componentes de $G$ si se compone de las $n - k$ aristas de peso mínimo de $T$.
 
+Por propiedad de árboles, está claro que si $B$ tiene $n - k$ aristas, entonces $B$ es un bosque generador de $k$ componentes conexas. Vamos a demostrar entonces, por el absurdo, que es mínimo.
+
+Supongamos que existe un bosque generador $B'$ de $k$ componentes de $G$ que tiene menor peso que $B$. Luego, podemos construir un árbol generador de $G$ tomando un conjunto $E$ de $k-1$ aristas de $T$ que unan a las $k$ componentes conexas diferentes en $B'$. Esto lo podemos hacer ya que, si tal conjunto no existierá, entonces habría, al menos, un par de vértices ubicados en dos componentes conexas diferentes de $B'$, para los cuales no existe un camino que los una en $T$. Lo que es absurdo, dado que $T$ es un árbol generador.
+
+Dicho esto, como estas aristas tienen, a lo sumo, el peso de las $k-1$ aristas máximas en $T$, sigue que $B' + E$ es un árbol generador de $G$ con peso menor que el árbol generador mínimo $T$. $\rightarrow\leftarrow$  
+
+En consecuencia, dado que el invariante del algoritmo de \textit{Kruskal} afirma que, para la $k$-ésima iteración, el grafo $T_k$ construido por el algoritmo es un subgrafo de un árbol generador mínimo de $G$ y, en cada iteración, el algoritmo agrega una arista segura de peso mínimo a $T_k$, para todo $1 \leq k \leq n-1$, entonces $T_{n-k}$ es un subgrafo de un árbol generador mínimo de $T$ compuesto por las $n-k$ aristas de peso mínimo de $T$. Sigue que $T_{n-k}$ es un bosque generador mínimo de $k$ componentes.
 
 % algoritmo
-\subsection{El algoritmo}
-
-Para ello, proponemos el siguiente algoritmo.
-
+\subsection{El algoritmo} Dicho todo esto, proponemos el siguiente algoritmo como solución al problema de los \textit{módems}.
 
 % complejidad
 \subsection{Complejidad temporal y espacial}
