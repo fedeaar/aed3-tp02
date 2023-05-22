@@ -35,6 +35,8 @@ void DFS_trans(int v) {
         if (marcados[w]) {
             //Si pertenecen a c.f.c distintas, hay arista de w a v porque D está transpuesto
             if (indice_en_F[v] != indice_en_F[w]) {
+                //Como w es nodos ya marcados en F, se sigue que los nodos posteriores a cada v en F
+                //no pueden apuntar a v. Por lo tanto F define un ordenamiento topológico
                 F[indice_en_F[w]].second.push_back(identificador_cfc);
             }
         }
@@ -54,17 +56,17 @@ void DFS_F(int v) {
     }
 }
 
-void bucket_sort(vector<pair<int,int>>& indices_d_in) {
-    //Ordena en base al d_in de cada nodo de F
-    vector<vector<pair<int,int>>> buckets(indices_d_in.size());
-    for (int i = 0; i < indices_d_in.size(); i++) {
-        buckets[indices_d_in[i].second].push_back(indices_d_in[i]);
+void counting_sort(vector<int>& sol) {
+    vector<int> counter(n, 0);
+    for (int i = 0; i < sol.size(); i++) {
+        counter[sol[i]]++;
     }
-    int indice_actual = 0;
-    for (int i = 0; i < buckets.size(); i++) {
-        for (pair<int,int> p : buckets[i]) {
-            indices_d_in[indice_actual] = p;
-            indice_actual++;
+    int indice = 0;
+    for (int i = 0; i < counter.size(); i++) {
+        while(counter[i] > 0) {
+            sol[indice] = i;
+            indice++;
+            counter[i]--;
         }
     }
 }
@@ -89,24 +91,17 @@ void kosaraju() {
 }
 
 void encontrar_indices() {
-    vector<pair<int,int>> indices_d_in(F.size(), make_pair(0,0)); // indices de F ordenados por grado de entrada
-    for (int i = 0; i < F.size(); i++) {
-        indices_d_in[i].first = i;
-        for (int w : F[i].second) indices_d_in[w].second++;
-    }
-    sort(indices_d_in.begin(), indices_d_in.end());
-    //bucket_sort(indices_d_in);
     vector<bool> marcados_limpio(F.size(), false);
     marcados = marcados_limpio;
-    // Recorre los nodos de F en orden de d_in
-    for (int i = 0; i < indices_d_in.size(); i++) {
-        if (marcados[indices_d_in[i].first]) continue;
+    // Recorre los nodos de F aprovechando que quedó ordenado topológicamente
+    for (int i = 0; i < F.size(); i++) {
+        if (marcados[i]) continue;
         else {
-            solucion.push_back(F[indices_d_in[i].first].first);
-            DFS_F(indices_d_in[i].first);
+            solucion.push_back(F[i].first);
+            DFS_F(i);
         }
     }
-    sort(solucion.begin(), solucion.end());
+    counting_sort(solucion);
 }
 
 int main(int argc, char** argv) {
