@@ -1,9 +1,9 @@
 proc modems(O: sec$<\mathbb{Z} \times \mathbb{Z}>$, N, W, R, U, V: $\mathbb{N}_0$) -> $\mathbb{R} \times \mathbb{R}$:
     a, b <- 0, 0
-    E <- {(w(O[i], O[j]), O[i], O[j]) | i, j: 1 .. N}
+    G <- grafo completo que modela el problema
     X <- $\emptyset$
     para i en 1 .. N - W:
-        u, v <- minima arista segura en E para B = (O, X)
+        u, v <- minima arista segura en G para B = (V(G), X)
         X <- X $\cup$ {(u, v)}
         si (u, v) es de tipo UDP:
             a <- a + w(u, v)
