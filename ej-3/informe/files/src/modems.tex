@@ -30,9 +30,7 @@ donde $d_{uv}$ es la distancia euclideana entre ambas oficinas. Notar que $w(u,\
 
 Luego, de haber, al menos, una oficina con un módem, $G_{\text{M}}$ modela una solución no mínima al problema de los \textit{módems} en la que todas las oficinas están conectadas entre si. 
 
-Si $W = 1$, sigue que, para mantener a todas las oficinas conectadas y minimizar el costo empleado en los cables, basta con encontrar un árbol generador mínimo de $G_{\text{M}}$. 
-
-Sin embargo, si $W > 1$, podemos reducir aún más el costo si, en vez de encontrar un árbol generador mínimo, encontramos un bosque generador mínimo de $W$ componentes conexas que sea un subgrafo de $G_{\text{M}}$. Es decir, un bosque de $W$ árboles que incluya a todos los vértices de $G_{\text{M}}$ y tenga peso mínimo.
+Si $W = 1$, sigue que, para mantener a todas las oficinas conectadas y minimizar el costo empleado en los cables, basta con encontrar un árbol generador mínimo de $G_{\text{M}}$. Sin embargo, si $W > 1$, podemos reducir aún más el costo si, en vez de encontrar un árbol generador mínimo, encontramos un bosque generador mínimo de $W$ componentes conexas que sea un subgrafo de $G_{\text{M}}$. Es decir, un bosque de $W$ árboles que incluya a todos los vértices de $G_{\text{M}}$ y tenga peso mínimo.
 
 Vamos a demostrar que este bosque es óptimo y que basta modificar al algoritmo de \textit{Kruskal}, tal que termine en la iteración $N-W$, para encontrarlo.
 
@@ -65,4 +63,4 @@ En consecuencia, dado que el invariante del algoritmo de \textit{Kruskal} afirma
 El mismo emplea una versión modificada del algoritmo de \textit{Kruskal} que, además de terminar en la iteración $N - W$, acumula el costo incurrido en cada tipo de cable, en las variables $a$ y $b$, a medida que agrega aristas al bosque $B$. %Notar que, para el algoritmo de \textit{Kruskal}, un arista es segura si y sólo si, además de mantener su invariante, conecta a dos componentes conexas diferentes del subgrafo construido hasta esa iteración.
 
 % complejidad
-\subsection{Complejidad temporal y espacial} El algoritmo \textsc{modems} depende casi exclusivamente de la implementación del algoritmo de \textit{Kruskal} que se utilice. Dado que el grafo $G_\text{M}$ es completo, la mejor\footnote{ En base a las implementaciones conocidas del algoritmo de \textit{Kruskal}.} complejidad que podemos lograr corresponde a utilizar la implementación del algoritmo para grafos densos, cuyo costo espacial y temporal es $\Theta(n^2)$. Esta opción es teóricamente la mejor, ya que las implementaciones para grafos \textit{ralos} tienen un costo temporal en $\Theta(m\log n)$, que equivale a $\Theta(n^2 \log n)$ para este caso de uso. 
+\subsection{Complejidad temporal y espacial} El algoritmo \textsc{modems} depende casi exclusivamente de la implementación del algoritmo de \textit{Kruskal} que utilicemos. Dado que el grafo $G_\text{M}$ es completo, la mejor\footnote{ En base a los algoritmos conocidos.} complejidad que podemos lograr corresponde a utilizar la implementación del algoritmo para grafos densos, cuyo costo espacial y temporal es $\Theta(n^2)$. Esta opción es teóricamente la mejor, ya que las implementaciones para grafos \textit{ralos} tienen un costo temporal en $\Theta(m\log n)$, que equivale a $\Theta(n^2 \log n)$ para este caso de uso.
