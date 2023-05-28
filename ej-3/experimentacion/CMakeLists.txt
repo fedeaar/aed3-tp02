@@ -4,9 +4,9 @@ project(experimentacion)
 set(CMAKE_CXX_STANDARD 14)
 
 add_executable(exp-denso
-./algoritmos/modems.h
-./algoritmos/impl/modems-denso.cpp
-experimento.cpp)
+        ./algoritmos/modems.h
+        ./algoritmos/impl/modems-denso.cpp
+        experimento.cpp)
 target_compile_definitions(exp-denso PUBLIC SRC=1)
 
 add_executable(exp-dsu

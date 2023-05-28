@@ -30,7 +30,7 @@ double distancia(pos z, pos w) {
 
 
 //
-// KRUSKAL
+// KRUSKAL (denso)
 //
 
 void crear_ADJ(vector<pos>& G) {

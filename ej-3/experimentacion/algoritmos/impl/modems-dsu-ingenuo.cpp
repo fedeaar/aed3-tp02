@@ -100,7 +100,7 @@ void kruskal() {
 
 
 //
-// MODEMS (dsu, ingenuo)
+// MODEMS (dsu ingenuo)
 //
 
 pair<double, double> modems(vector<pos> G, int n, int r, int w, int u, int v) {
