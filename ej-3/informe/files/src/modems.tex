@@ -39,7 +39,7 @@ Vamos a demostrar que este bosque es óptimo y que basta modificar al algoritmo 
 
 Supongamos, por absurdo, que un bosque generador mínimo de $W$ componentes de $G_{\text{M}}$ no es una solución óptima al problema de los módems. Luego, debe existir otro subgrafo $B \subseteq G_{\text{M}}$ cuyo peso es el mínimo posible y que, una vez dispuestos los $W$ módems, provee de internet a todas las oficinas. 
 
-Sin embargo, $B$ también debe ser un bosque generador de $W$ componentes. Esto se debe a que: si no fuera generador, entonces no estaríamos considerando todas las oficinas en nuestro modelo; y, si no fuera un bosque de $W$ componentes, entonces podríamos reducir su peso si eliminaramos suficientes aristas ---el peso de toda arista es positivo en $G_{\text{M}}$--- hasta formar uno. Notar que tampoco puede tener más componentes, ya que no habría suficientes módems para proveer de internet a cada grupo de oficinas. 
+Sin embargo, $B$ también debe ser un bosque generador de $W$ componentes. Esto se debe a que: si no fuera generador, entonces no estaríamos considerando todas las oficinas en nuestro modelo; y, si no fuera un bosque de $W$ componentes, entonces podríamos reducir su peso si eliminaramos suficientes aristas ---el peso de toda arista es no negativo en $G_{\text{M}}$--- hasta formar uno. Notar que tampoco puede tener más componentes, ya que no habría suficientes módems para proveer de internet a cada grupo de oficinas. 
 
 En consecuencia, $B$ es un bosque generador de $W$ componentes conexas de $G_{\text{M}}$ que tiene un peso menor que un bosque generador mínimo de $W$ componentes  de $G_{\text{M}}$. $\rightarrow\leftarrow$ $\hfill \square$
 
