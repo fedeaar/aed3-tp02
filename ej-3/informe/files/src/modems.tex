@@ -49,7 +49,7 @@ En consecuencia, $B$ es un bosque generador de $W$ componentes conexas de $G_{\t
 \begin{proof}
 Por propiedad de árboles, está claro que si $B \subseteq T$ tiene $n - k$ aristas, entonces $B$ es un bosque generador de $k$ componentes conexas. Vamos a demostrar entonces, por el absurdo, que es mínimo.
 
-Supongamos que existe un bosque generador $B'$ de $k$ componentes de $G$ que pesa menos que $B$. Luego, podemos construir un árbol generador de $G$ tomando un conjunto $E$ de $k-1$ aristas de $T$ que unan a las $k$ componentes conexas diferentes en $B'$. Esto lo podemos hacer ya que, si tal conjunto no existierá, entonces habría, al menos, un par de vértices, ubicados en dos componentes conexas diferentes de $B'$, para los cuales no existe un camino que los una en $T$. Lo que es absurdo, dado que $T$ es un árbol generador.
+Supongamos que existe un bosque generador $B'$ de $k$ componentes de $G$ que pesa menos que $B$. Luego, podemos construir un árbol generador de $G$, a partir de $B'$, si le agregamos un conjunto $E$ de $k-1$ aristas de $T$ que unan a las $k$ componentes conexas diferentes en $B'$. Esto lo podemos hacer ya que, si tal conjunto no existierá, entonces habría, al menos, un par de vértices, ubicados en dos componentes conexas diferentes de $B'$, para los cuales no existe un camino que los una en $T$. Lo que es absurdo, dado que $T$ es un árbol generador.
 
 Dicho esto, como estas aristas tienen, a lo sumo, el peso de las $k-1$ aristas máximas en $T$, sigue que $B' + E$ es un árbol generador de $G$ con peso menor que el árbol generador mínimo $T$. $\rightarrow\leftarrow$  
 \end{proof}
