@@ -1,9 +1,4 @@
-#include <vector>
-#include <iostream>
-#include <bits/stdc++.h>
-#include <tuple>
-
-using namespace std;
+#include "../modems.h"
 
 
 //
@@ -30,31 +25,34 @@ double distancia(pos z, pos w) {
 
 
 //
-// SOLUCION
+// KRUSKAL (dsu ingenuo)
 //
 
-struct DSU{
+struct DSU {
 
     DSU(int n){
-        padre = rank = vector<int>(n);
+        hijos.resize(n, {});
+        padre = vector<int>(n);
         for(int v = 0; v < n; v++) padre[v] = v;
     }
 
     int find(int v){
-        if(v == padre[v]) return v;
-        return padre[v] = find(padre[v]);
+        return padre[v];
     }
 
     void unite(int u, int v){
         u = find(u), v = find(v);
-        if(u == v) return;
-        if(rank[u] < rank[v]) swap(u,v);
-        padre[v] = padre[u];
-        rank[u] = max(rank[u],rank[v]+1);
+        padre[v] = u;
+        hijos[u].push_back(v);
+        for (int i = 0; i < hijos[v].size(); i++) {
+            hijos[u].push_back(hijos[v][i]);
+        }
+        hijos[v] = {};
     }
 
     vector<int> padre;
-    vector<int> rank;
+    vector<vector<int>> hijos;
+
 };
 
 void crear_E(vector<pos>& G) {
@@ -102,26 +100,16 @@ void kruskal() {
 
 
 //
-// MAIN
+// MODEMS (dsu, ingenuo)
 //
 
-int main(int argc, char** argv) {
-    int c;
-    cin >> c;
-    for (int k = 0; k < c; k ++) {
-        s_utp = 0;
-        s_fo = 0;
-        E = {}; //Reiniciamos las variables globales para los siguientes casos
-        vector<pos> G;
-        cin >> N >> R >> W >> U >> V;
-        int x, y;
-        for (int i = 0; i < N; i++) {
-            cin >> x >> y;
-            G.push_back(make_pair(x,y));
-        }
-        crear_E(G);
-        kruskal();
-        cout << "Caso #" << k+1 << ": ";
-        cout <<  setprecision(3) << fixed << s_utp << " " << s_fo << endl;
-    }
+pair<double, double> modems(vector<pos> G, int n, int r, int w, int u, int v) {
+    N = n, R = r, W = w, U = u, V = v;
+    s_utp = 0;
+    s_fo = 0;
+    E = {};
+
+    crear_E(G);
+    kruskal();
+    return {s_utp, s_fo};
 }

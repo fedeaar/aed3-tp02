@@ -18,11 +18,11 @@ El repositorio cuenta con los siguientes archivos y carpetas:
 
 <br>
 
-### Cómo crear los archivos ejecutables
+### Cómo crear los archivos ejecutables de los ejercicios
 
 Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del repo procederemos de la siguiente forma.
 
-1. Para crear el ejecutable de cada ejercicio (reemplazar `i` por el numero del ejercicio. Por ejemplo: ej-1).
+1. Para crear el ejecutable de cada ejercicio (reemplazar `i` por el numero del ejercicio. Por ejemplo: ej-1)
 
 ```bash
 $ cd ej-i
@@ -36,8 +36,46 @@ $ cmake ..
 $ make
 ```
 
-2. Para ejecutarlo (desde la carpeta ./ej-`i`/build/)
+2. Para ejecutarlo (desde la carpeta ./ej-`i`/build/, reemplazar `i` por el numero del ejercicio)
 
-```
+```bash
 $ ./ej-i
+```
+
+
+<br>
+
+### Cómo crear los archivos ejecutables de la experimentación
+
+Para este procedimiento se asume que trabajaremos en bash. Desde la raiz del repo procederemos de la siguiente forma.
+
+1. Para crear los ejecutables de la experimentación
+
+```bash
+$ cd ej-3/experimentacion/
+
+$ mkdir build
+
+$ cd build
+
+$ cmake ..
+
+$ make
+```
+
+2. Para ejecutar cada experimento (desde la carpeta ./ej-3/experimentacion/)
+
+```bash
+# generamos los casos de test y directorios
+
+$ python generar_instancias.py
+
+# ejecutamos
+
+$ ./build/exp-denso
+
+$ ./build/exp-dsu
+
+$ ./build/exp-dsu-ingenuo
+
 ```

@@ -1,11 +1,9 @@
-#include <chrono>
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include <bits/stdc++.h>
-#include <tuple>
-using namespace std;
+#include "../modems.h"
+
+
+// 
+//GLOBAL
+//
 
 typedef pair<int,int> pos;
 typedef tuple<double, int, int, bool> eje_pesado;
@@ -18,14 +16,10 @@ double INF = numeric_limits<double>::max();
 vector<double> distancias_min; // mínimas distancias a otros conjuntos disjuntos
 vector<bool> esRepresentante; // refleja si el nodo actual es el representante de un conjunto
 
-vector<int> read_input(int size) {
-    vector<int> input(size); string file_name = "inputs/input_" + to_string(size);
-    cout << file_name << endl;
-    ifstream read_file(file_name);
-    for (int i=0; i<size; i++) read_file >> input[i];
-    read_file.close();
-    return input;
-}
+
+//
+// AUX
+//
 
 double distancia(pos z, pos w) {
     int x = z.first - w.first;
@@ -33,6 +27,11 @@ double distancia(pos z, pos w) {
     double dist = pow(x, 2) + pow(y, 2);
     return sqrt(dist);
 }
+
+
+//
+// KRUSKAL
+//
 
 void crear_ADJ(vector<pos>& G) {
     for (int i = 0; i < N; i++) {
@@ -96,12 +95,11 @@ void remover(eje_pesado e) {
     }
 }
 
-
 void kruskal() {
     int aristas = 0;
-    // La cantidad de modems equivale a la cantidad de componentes conexas de nuestro arbol.
-    // Al ser bosque generador, si tiene w c.c, tiene n - w aristas
-    while (aristas < N - W) {
+        // La cantidad de modems equivale a la cantidad de componentes conexas de nuestro arbol.
+        // Al ser bosque generador, si tiene w c.c, tiene n - w aristas
+        while (aristas < N - W) {
 
         eje_pesado e = eje_minimo();
         bool esFO = get<3>(e);
@@ -113,16 +111,19 @@ void kruskal() {
     }
 }
 
-double measure(vector<pos>& G, int n) {
-    auto start = chrono::high_resolution_clock::now();
 
+//
+// MODEMS (denso)
+//
+
+pair<double, double> modems(vector<pos> G, int n, int r, int w, int u, int v) {
+    N = n, R = r, W = w, U = u, V = v;
     distancias_min = {};
     esRepresentante = {};
     s_utp = 0;
     s_fo = 0;
     ADJ = {};
     esRepresentante.resize(N, true);
-
     vector<pair<double, bool>> VEC(N, make_pair(INF, false));
     ADJ.resize(N, VEC);
     crear_ADJ(G);
@@ -133,34 +134,5 @@ double measure(vector<pos>& G, int n) {
         }
     }
     kruskal();
-
-    auto stop = chrono::high_resolution_clock::now();
-    chrono::duration<double> diff = stop - start;
-    return diff.count();
+    return {s_utp, s_fo};
 }
-
-int main() {
-    int repeat = 6;
-    ofstream output_file; output_file.open("runtime.csv");
-    output_file << "n,time\n";
-
-    int limit = 10000;
-    for (int n=1000; n<=limit; n+=1000) {
-        vector<int> input = read_input(n);
-        vector<pos> G;
-        for (int i = 0; i < n-1; i+= 2) {
-            G.push_back(make_pair(input[i], input[i + 1]));
-        }
-        N = n/2; R = 1; W = n/8; U = 5; V = 5;
-        double counter = 0;
-        for (int ignore=0; ignore<repeat; ignore++) counter += measure(G, n);
-
-        output_file << n << "," << counter / repeat << endl;
-        cout << n << counter / repeat << endl;
-    }
-
-    output_file.close();
-    return 0;
-}
-
-

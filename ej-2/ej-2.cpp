@@ -3,8 +3,13 @@
 #include <stack>
 #include <bits/stdc++.h>
 
-
 using namespace std;
+
+
+//
+// GLOBAL
+//
+
 vector<vector<int>> D; // digrafo
 vector<vector<int>> D_trans; // digrafo transpuesto
 vector<int> Pila; // pila para kosaraju
@@ -15,6 +20,31 @@ vector<int> indice_en_F; // posición en F a la que corresponde
 int identificador_cfc = 0;
 vector<int> solucion;
 int n, m;
+
+
+//
+// AUX
+//
+
+void counting_sort(vector<int>& sol) {
+    vector<int> counter(n, 0);
+    for (int i = 0; i < sol.size(); i++) {
+        counter[sol[i]]++;
+    }
+    int indice = 0;
+    for (int i = 0; i < counter.size(); i++) {
+        while(counter[i] > 0) {
+            sol[indice] = i;
+            indice++;
+            counter[i]--;
+        }
+    }
+}
+
+
+//
+// SOLUCION
+//
 
 void DFS_stacker(int v) {
     //Apila los nodos recorridos en orden inverso
@@ -56,21 +86,6 @@ void DFS_F(int v) {
     }
 }
 
-void counting_sort(vector<int>& sol) {
-    vector<int> counter(n, 0);
-    for (int i = 0; i < sol.size(); i++) {
-        counter[sol[i]]++;
-    }
-    int indice = 0;
-    for (int i = 0; i < counter.size(); i++) {
-        while(counter[i] > 0) {
-            sol[indice] = i;
-            indice++;
-            counter[i]--;
-        }
-    }
-}
-
 void kosaraju() {
     for (int i = 0; i < n; i++) {
         if (!marcados[i]) {
@@ -103,6 +118,11 @@ void encontrar_indices() {
     }
     counting_sort(solucion);
 }
+
+
+//
+// MAIN
+//
 
 int main(int argc, char** argv) {
     cin >> n >> m;

@@ -3,10 +3,10 @@
 
 %Afortunadamente contamos con la siguiente especificación: https://fedelebron.com/a-dense-version-of-kruskals-algorithm, que detalla cómo esbozar un algoritmo no sólo más eficiente sino que asintóticamente superior, con complejidad temporal de $O(n^2)$ en vez de $O(n^2logn)$
 
-Para revisar de manera empírica la diferencia en eficiencia entre una implementación de \textsc{modems} sobre el algoritmo de \textit{Kruskal} para grafos \textit{densos}\footnote{Para este algoritmo, nos basamos en la implementación propuesta por Federico Lebron en su \href{https://fedelebron.com/a-dense-version-of-kruskals-algorithm}{\color{blue} blog}.} y una implementación sobre el mismo algoritmo para grafos \textit{ralos}\footnote{Ver nota al pie \ref{foot_1}. Sección 23.2: \textit{The algorithms of Kruskal and Prim}.}, procedimos a implementar\footnote{Los experimentos, algoritmos y archivos resultantes se pueden encontrar en \textit{./ej-3/experimentacion}.} ambas versiones en C$++$ y realizamos una serie de evaluaciones respecto al tiempo de ejecución en función del tamaño de la entrada, para muestras aleatorias de tamaño $N = 5000k$ para cada $k$ natural en el rango $1 \leq k \leq 10$. 
+Para revisar de manera empírica la diferencia en eficiencia entre una implementación de \textsc{modems} sobre el algoritmo de \textit{Kruskal} para grafos \textit{densos}\footnote{Para este algoritmo, nos basamos en la especificación propuesta por Federico Lebron en su \href{https://fedelebron.com/a-dense-version-of-kruskals-algorithm}{\color{blue} blog}.} y una implementación sobre el mismo algoritmo para grafos \textit{ralos}\footnote{Ver nota al pie \ref{foot_1}. Sección 23.2: \textit{The algorithms of Kruskal and Prim}.}, procedimos a implementar\footnote{Los experimentos, algoritmos y archivos resultantes se pueden encontrar en \textit{./ej-3/experimentacion}.} ambas versiones en C$++$ y realizamos una serie de evaluaciones respecto al tiempo de ejecución en función del tamaño de la entrada, para muestras aleatorias de tamaño $N = 1000k$ para cada $k$ natural en el rango $1 \leq k \leq 10$. 
 
 Realizamos cada evaluación diez veces para reducir la variación de los resultados y tomamos el promedio aritmético. 
-A su vez, controlamos los parámetros de la función de la siguiente forma. Elegimos \mbox{$W = N/4$}, $R = 1$ y $W = V = 5$, y definimos la posición de cada oficina $o_i = (x_i,\ y_i)$, para todo $0 \leq i \leq 5000k$, como la tupla $(z,\ z+1)$ para algún $0 \leq z \leq 5000k$. 
+A su vez, controlamos los parámetros de la función de la siguiente forma. Elegimos \mbox{$W = N/2$}, $R = 1$ y $W = V = 5$, y definimos la posición de cada oficina $o_i = (x_i,\ y_i)$, para todo $0 \leq i \leq N$ y $0 \leq x_i,\ y_i \leq N$ aleatorios, tal que $x_i \neq x_j$ y $y_i \neq y_j$ para todo $1 \leq i,\ j \leq N$ e $i \neq j$. 
 
 %\vspace{0.5em}
 \begin{figure}[!htbp]
@@ -21,7 +21,7 @@ A su vez, controlamos los parámetros de la función de la siguiente forma. Eleg
 
 Notar que ninguna de estas decisiones afecta la complejidad asintótica del algoritmo. Sin embargo, un analisis en mayor profundidad debería, también, evaluar el comportamiento de ambos algoritmos en función de estos parámetros.
 
-La Figura \ref{grafico_1} expone los resultados. Podemos notar que hay una clara diferencia de velocidad a favor del algoritmo cuadrático, incluso en las entradas de menor tamaño. La regresión se realizó con cuadrados mínimos y obtuvo un error, relativamente chico, de $\approx 21.17$. Esto parece indicar que la relación entre la complejidad de ambos algoritmos es superlineal. %Si bien es útil, cabe aclarar que esta observación está lejos de ser conclusiva en términos estrictamente empíricos. %Podemos concluir entonces que resulta más eficiente para este problema
+La Figura \ref{grafico_1} expone los resultados. Podemos notar que hay una clara diferencia de velocidad a favor del algoritmo cuadrático, incluso en las entradas de menor tamaño. La regresión se realizó con cuadrados mínimos y obtuvo un error de $\approx 752.32$. %Esto parece indicar que la relación entre la complejidad de ambos algoritmos es superlineal. %Si bien es útil, cabe aclarar que esta observación está lejos de ser conclusiva en términos estrictamente empíricos. %Podemos concluir entonces que resulta más eficiente para este problema
 
 \subsection{Heurísticas para la implementación de disjoint set}
 
@@ -31,9 +31,10 @@ Esta segunda versión del algoritmo utiliza la implementación de \textit{Kruska
 
 En forma análoga a la experimentación anterior, hicimos una prueba empírica con las dos versiones de esta implementación. La Figura \ref{fig2} muestra los resultados.
 
+\vspace{0.5em}
 \begin{figure}[!htbp]
     \includegraphics[scale=0.4, clip]{./files/src/.media/comparacion_DSU.png}
     \caption{Tiempo de ejecución del \textsc{modems} en función del tamaño de entrada $n$ para el algoritmo supercuadrático \textit{optimizado} ---con las heurísticas--- y \textit{subóptimo} ---o, ingénuo---.}\label{fig2}
 \end{figure}
 
-Notamos que, en las entradas más grandes, la versión sin optimizar parece funcionar mejor. Esto tiene sentido, ya que $\Theta(n^2) < \Theta(m\alpha(n))$ si el grafo de entrada es \textit{denso}. 
+Notamos que, en general, la versión con las heurísticas parece funcionar mejor. Esto puede deberse a las constantes \textit{invisibles} asociadas a cada algoritmo, ya que $\Theta(n^2) < \Theta(m\alpha(n))$ si el grafo de entrada es \textit{denso}. Es decir, cuando $n^2 \sim m$. 

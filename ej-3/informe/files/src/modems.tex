@@ -5,7 +5,7 @@ El problema de los \textit{módems} que consideraremos tiene la siguiente premis
 \end{equation*}
 donde, para cada $1 \leq i \leq N$, la oficina $o_i$ se representa por su posición $(x_i,\ y_i)$ en el plano cartesiano ---cuya unidad es el metro---, queremos encontrar el costo mínimo que debemos pagar en cables UTP y de fibra óptica para conectar todas las oficinas a internet\footnote{Notar que una oficina tendrá acceso a internet si y sólo si tiene un módem o está conectada a una oficina con acceso a internet.}.
 
-Para ello, vamos a contar con $W < N$ módems a distribuir entre las oficinas e incurriremos en un costo de $U$ o $V$ pesos, $0 \leq U \leq V$, respectivamente, por cada metro de cable UTP o de fibra óptica utilizado. Dado que los cables UTP tienen ciertas restricciones, estos se podrán utilizar si y sólo si la distancia entre dos oficinas es menor o igual a $R$ metros. 
+Para ello, vamos a contar con $W < N$ módems a distribuir entre las oficinas e incurriremos en un costo de $U$ o $V$ pesos, $0 \leq U \leq V$, respectivamente, por cada metro de cable UTP o de fibra óptica utilizado. Dado que los cables UTP tienen ciertas restricciones, estos se podrán utilizar si y sólo si la distancia entre dos oficinas es menor o igual a $R$. 
 
 Por ejemplo, si 
 \begin{equation*}
@@ -53,7 +53,7 @@ Supongamos que existe un bosque generador $B'$ de $k$ componentes de $G$ que pes
 
 Dicho esto, como estas aristas tienen, a lo sumo, el peso de las $k-1$ aristas máximas en $T$, sigue que $B' + E$ es un árbol generador de $G$ con peso menor que el árbol generador mínimo $T$. $\rightarrow\leftarrow$  
 \end{proof}
-En consecuencia, dado que el invariante del algoritmo de \textit{Kruskal} afirma que, para la $k$-ésima iteración, el grafo $B_k$ construido por el algoritmo es un subgrafo de un árbol generador mínimo de $G$ y, en cada iteración, el algoritmo agrega una arista segura de peso mínimo a $B_k$, para todo $1 \leq k \leq n-1$, entonces, $B_{n-k}$ es un subgrafo de un árbol generador mínimo $T$ compuesto por sus $n-k$ aristas de peso mínimo. Luego, $B_{n-k}$ es un bosque generador mínimo de $k$ componentes. $\hfill \square$
+En consecuencia, dado que el invariante del algoritmo de \textit{Kruskal} afirma que, para la $k$-ésima iteración, el grafo $B_k$ construido es un subgrafo de un árbol generador mínimo de $G$ y, en cada iteración, el algoritmo agrega una arista segura de peso mínimo a $B_k$, para todo $1 \leq k \leq n-1$, entonces $B_{n-k}$ es un subgrafo de un árbol generador mínimo $T$ compuesto por sus $n-k$ aristas de peso mínimo. Luego, $B_{n-k}$ es un bosque generador mínimo de $k$ componentes. $\hfill \square$
 
 % algoritmo
 \subsection{El algoritmo} Dicho todo esto, el siguiente pseudo-algoritmo presenta una solución al problema de los \textit{módems}. %que es una modificación del algoritmo de \textit{Kruskal}. 
