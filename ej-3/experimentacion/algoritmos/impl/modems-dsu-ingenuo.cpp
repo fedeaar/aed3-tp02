@@ -45,6 +45,7 @@ struct DSU {
         padre[v] = u;
         hijos[u].push_back(v);
         for (int i = 0; i < hijos[v].size(); i++) {
+            padre[hijos[v][i]] = u;
             hijos[u].push_back(hijos[v][i]);
         }
         hijos[v] = {};
